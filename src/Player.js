@@ -1,4 +1,6 @@
 /* eslint-disable no-param-reassign */
+import './main.scss';
+
 import {
   playIcon,
   replayIcon,
@@ -16,7 +18,10 @@ export default class {
     this.video = video;
     this.container = document.createElement('div');
     wrapElem(video, this.container);
+
+    this.muted = false;
   }
+
 
   setCustomControls() {
     const { video } = this;
@@ -31,16 +36,19 @@ export default class {
     const progressBar = document.createElement('div');
     progressBar.className = `${namespace}__progressBar`;
     video.addEventListener('timeupdate', () => {
-      // progressBar.value = video.currentTime;
       progressBar.style.width = `${Math.floor((video.currentTime / video.duration) * 100)}%`;
     });
 
     const muteBtn = document.createElement('div');
-    muteBtn.className = `${namespace}__mute`;
+    const muteBtnClassName = `${namespace}__muteBtn`;
+    muteBtn.className = muteBtnClassName;
     muteBtn.appendChild(muteOnIcon);
     muteBtn.appendChild(muteOffIcon);
     muteBtn.addEventListener('click', () => {
-      video.muted = !video.muted;
+      muteBtn.classList.toggle(`${muteBtnClassName}--off`);
+
+      this.muted = !this.muted;
+      video.muted = this.muted;
     });
 
     [progressBar, muteBtn].forEach((element) => {
@@ -49,7 +57,7 @@ export default class {
 
 
     const playBtn = document.createElement('div');
-    playBtn.className = `${namespace}__play`;
+    playBtn.className = `${namespace}__playBtn`;
     playBtn.appendChild(playIcon);
     playBtn.addEventListener('click', () => {
       hide(playBtn);
@@ -58,10 +66,11 @@ export default class {
     show(playBtn);
 
     const replayBtn = document.createElement('div');
-    replayBtn.className = `${namespace}__replay`;
+    replayBtn.className = `${namespace}__replayBtn`;
     replayBtn.appendChild(replayIcon);
     replayBtn.addEventListener('click', () => {
-      video.muted = !video.muted;
+      hide(replayBtn);
+      video.play();
     });
     video.addEventListener('ended', () => {
       hide(playBtn);
@@ -71,6 +80,7 @@ export default class {
       video.play();
     });
     video.addEventListener('play', () => {
+      video.muted = this.muted;
       hide(replayBtn);
     });
 

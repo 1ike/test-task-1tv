@@ -1,3 +1,3 @@
 export const namespace = 'myCustomPlayer';
-export const controlsColor = 'blue';
-export const active = 'active';
+export const controlsColor = 'white';
+export const active = `${namespace}__control--active`;
