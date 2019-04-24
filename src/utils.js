@@ -19,3 +19,6 @@ export const show = (element) => {
 export const hide = (element) => {
   element.classList.remove(active);
 };
+export const toggle = (element, className) => {
+  element.classList.toggle(className);
+};

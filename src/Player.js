@@ -9,7 +9,7 @@ import {
 } from './icons';
 import { namespace } from './constants';
 import {
-  wrapElem, setAttributes, show, hide,
+  wrapElem, setAttributes, show, hide, toggle,
 } from './utils';
 
 
@@ -117,7 +117,7 @@ export default class {
   mute() {
     const { video, muteBtn, muteBtnClassName } = this;
 
-    muteBtn.classList.toggle(`${muteBtnClassName}--off`);
+    toggle(muteBtn, `${muteBtnClassName}--off`);
 
     this.muted = !this.muted;
     video.muted = this.muted;
