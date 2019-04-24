@@ -8,5 +8,5 @@ Array.from(players).forEach((video, index) => {
 
   player.setCustomControls();
 
-  // if (!index) player.play();
+  if (!index) player.play();
 });

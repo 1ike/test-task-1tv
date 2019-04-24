@@ -14,6 +14,8 @@ const config = {
     path: path.resolve(__dirname, dist),
   },
 
+  devtool: 'source-map',
+
   module: {
     rules: [
       {
@@ -37,9 +39,7 @@ const config = {
 export default (env, argv) => {
   console.log(argv.mode);
   if (argv.mode === 'development') {
-    config.devtool = 'source-map';
     config.plugins = [
-      ...config.plugins,
       new HtmlWebpackPlugin({
         template: 'index.html',
       }),

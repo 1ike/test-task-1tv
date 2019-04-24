@@ -1,4 +1,5 @@
 .myCustomPlayer {
+    display: inline-block;
     position: relative;
     max-width: 100%;
 
@@ -45,16 +46,16 @@
         cursor: pointer;
 
         &--off {
-            .myCustomPlayer__icon-muteOff {
+            .myCustomPlayer__icon-muteOn {
                 display: block;
             }
         }
     }
-    &__icon-muteOn {
+    &__icon-muteOff {
         height: $muteBtnDimension;
         width: $muteBtnDimension;
     }
-    &__icon-muteOff {
+    &__icon-muteOn {
         display: none;
         position: absolute;
         left: $muteBtnDimension/2;

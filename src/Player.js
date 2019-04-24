@@ -42,47 +42,31 @@ export default class {
     const muteBtn = document.createElement('div');
     const muteBtnClassName = `${namespace}__muteBtn`;
     muteBtn.className = muteBtnClassName;
-    muteBtn.appendChild(muteOnIcon);
-    muteBtn.appendChild(muteOffIcon);
+    muteBtn.appendChild(muteOffIcon.cloneNode(true));
+    muteBtn.appendChild(muteOnIcon.cloneNode(true));
     muteBtn.addEventListener('click', () => {
-      muteBtn.classList.toggle(`${muteBtnClassName}--off`);
-
-      this.muted = !this.muted;
-      video.muted = this.muted;
+      this.mute();
     });
-
-    [progressBar, muteBtn].forEach((element) => {
-      controlsBar.appendChild(element);
-    });
-
+    this.muteBtn = muteBtn;
+    this.muteBtnClassName = muteBtnClassName;
 
     const playBtn = document.createElement('div');
     playBtn.className = `${namespace}__playBtn`;
-    playBtn.appendChild(playIcon);
+    playBtn.appendChild(playIcon.cloneNode(true));
     playBtn.addEventListener('click', () => {
-      hide(playBtn);
-      video.play();
+      this.play();
     });
     show(playBtn);
+    this.playBtn = playBtn;
 
     const replayBtn = document.createElement('div');
     replayBtn.className = `${namespace}__replayBtn`;
-    replayBtn.appendChild(replayIcon);
+    replayBtn.appendChild(replayIcon.cloneNode(true));
     replayBtn.addEventListener('click', () => {
-      hide(replayBtn);
-      video.play();
+      this.play();
     });
-    video.addEventListener('ended', () => {
-      hide(playBtn);
-      show(replayBtn);
-    });
-    replayBtn.addEventListener('click', () => {
-      video.play();
-    });
-    video.addEventListener('play', () => {
-      video.muted = this.muted;
-      hide(replayBtn);
-    });
+    this.replayBtn = replayBtn;
+
 
     [muteBtn, playBtn, replayBtn].forEach((element) => {
       setAttributes(element, {
@@ -92,18 +76,50 @@ export default class {
       });
     });
 
+
+    [progressBar, muteBtn].forEach((element) => {
+      controlsBar.appendChild(element);
+    });
+
     [playBtn, replayBtn, controlsBar].forEach((element) => {
       this.container.appendChild(element);
     });
 
+
     video.addEventListener('click', () => {
       if (video.ended) return;
-      if (!video.paused) video.pause();
-      show(playBtn);
+      if (!video.paused) this.pause();
+    });
+
+    video.addEventListener('ended', () => {
+      hide(playBtn);
+      show(replayBtn);
     });
   }
 
+
   play() {
-    this.video.play();
+    const {
+      video, playBtn, replayBtn, muted,
+    } = this;
+
+    video.muted = muted;
+    hide(playBtn);
+    hide(replayBtn);
+    video.play();
+  }
+
+  pause() {
+    this.video.pause();
+    show(this.playBtn);
+  }
+
+  mute() {
+    const { video, muteBtn, muteBtnClassName } = this;
+
+    muteBtn.classList.toggle(`${muteBtnClassName}--off`);
+
+    this.muted = !this.muted;
+    video.muted = this.muted;
   }
 }
