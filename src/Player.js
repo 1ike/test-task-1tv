@@ -1,5 +1,4 @@
 /* eslint-disable no-param-reassign */
-import './main.scss';
 
 import {
   playIcon,
@@ -18,8 +17,6 @@ export default class {
     this.video = video;
     this.container = document.createElement('div');
     wrapElem(video, this.container);
-
-    this.muted = false;
   }
 
 
@@ -45,7 +42,7 @@ export default class {
     muteBtn.appendChild(muteOffIcon.cloneNode(true));
     muteBtn.appendChild(muteOnIcon.cloneNode(true));
     muteBtn.addEventListener('click', () => {
-      this.mute();
+      this.toggleMute();
     });
     this.muteBtn = muteBtn;
     this.muteBtnClassName = muteBtnClassName;
@@ -91,6 +88,11 @@ export default class {
       if (!video.paused) this.pause();
     });
 
+    video.addEventListener('play', () => {
+      hide(playBtn);
+      hide(replayBtn);
+    });
+
     video.addEventListener('ended', () => {
       hide(playBtn);
       show(replayBtn);
@@ -99,11 +101,8 @@ export default class {
 
 
   play() {
-    const {
-      video, playBtn, replayBtn, muted,
-    } = this;
+    const { video, playBtn, replayBtn } = this;
 
-    video.muted = muted;
     hide(playBtn);
     hide(replayBtn);
     video.play();
@@ -114,12 +113,8 @@ export default class {
     show(this.playBtn);
   }
 
-  mute() {
-    const { video, muteBtn, muteBtnClassName } = this;
-
-    toggle(muteBtn, `${muteBtnClassName}--off`);
-
-    this.muted = !this.muted;
-    video.muted = this.muted;
+  toggleMute() {
+    toggle(this.muteBtn, `${this.muteBtnClassName}--off`);
+    this.video.muted = !this.video.muted;
   }
 }

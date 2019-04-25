@@ -1,3 +1,5 @@
+import './main.scss';
+
 import Player from './Player';
 
 

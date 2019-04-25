@@ -12,8 +12,12 @@
     "eslint": "*",
     "eslint-config-airbnb-base": "*",
     "eslint-plugin-import": "*",
+    "eslint-plugin-jest": "*",
     "html-webpack-plugin": "^3.2.0",
+    "jest": "*",
+    "jest-cli": "*",
     "node-sass": "^4.11.0",
+    "puppeteer": "^1.14.0",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
     "webpack": "^4.30.0",
@@ -24,6 +28,18 @@
     "build": "webpack -p",
     "server": "webpack-dev-server -d",
     "eslint": "eslint",
-    "postinstall": "npm run build"
+    "postinstall": "npm run build",
+    "test": "jest --coverage",
+    "test-watch": "jest --no-cache --watchAll"
+  },
+  "jest": {
+    "testEnvironment": "jsdom",
+    "modulePathIgnorePatterns": [
+      "<rootDir>/__tests__/__fixtures__/"
+    ],
+    "watchPathIgnorePatterns": [
+      "<rootDir>/node_modules/",
+      "<rootDir>/dist/"
+    ]
   }
 }
