@@ -1,5 +1,4 @@
 import Player from '../src/Player';
-import { namespace } from '../src/constants';
 
 let video;
 
@@ -27,19 +26,5 @@ describe.skip('Player', () => {
 
     muteBtn.click();
     expect(video.muted).toBeFalsy();
-  });
-
-  test('play/pause', () => {
-    const playBtn = document.getElementsByClassName(`${namespace}__playBtn`)[0];
-    expect(getComputedStyle(playBtn).display).not.toBe('none');
-    expect(video.paused).toBeTruthy();
-
-    // playBtn.click();
-    // expect(getComputedStyle(playBtn).display).toBe('none');
-    // expect(video.paused).toBeFalsy();
-
-    video.click();
-    expect(getComputedStyle(playBtn).display).not.toBe('none');
-    expect(video.paused).toBeTruthy();
   });
 });

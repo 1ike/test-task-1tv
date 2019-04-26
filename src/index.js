@@ -10,5 +10,12 @@ Array.from(players).forEach((video, index) => {
 
   player.setCustomControls();
 
-  if (index === 0) player.play();
+  // eslint-disable-next-line no-param-reassign
+  if (index === 0) video.autoplay = true;
+
+  // if (index === 0) {
+  //   video.addEventListener('canplay', () => {
+  //     player.play();
+  //   });
+  // }
 });
