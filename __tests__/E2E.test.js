@@ -7,7 +7,7 @@ const pathToChrome = 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chro
 const url = 'http://localhost:8080/';
 // const headless = true;
 const headless = false;
-const slowMo = headless ? 100 : 100;
+// const slowMo = headless ? 0 : 100;
 const timeout = 30000;
 
 let page;
@@ -44,6 +44,12 @@ const getComputedWidth = async (element) => {
   return value;
 };
 
+const appointFlagToEvent = async (flag, event, element = video) => {
+  await page.evaluate((flagName, eventName, elem) => {
+    elem.addEventListener(eventName, () => { window[flagName] = true; });
+  }, flag, event, element);
+};
+
 const isVisible = async element => (await element.boxModel() !== null);
 
 
@@ -52,7 +58,7 @@ describe('E2E browser testing', () => {
     jest.setTimeout(timeout);
     browser = await puppeteer.launch({
       headless,
-      slowMo,
+      // slowMo,
       args: ['--no-sandbox'],
       // args: [`--window-size=${width},${height}`]
       executablePath: pathToChrome,
@@ -67,6 +73,7 @@ describe('E2E browser testing', () => {
     replayBtn = await page.$(replayBtnSelector);
     progressBar = await page.$(progressBarSelector);
 
+    // await playBtn.click();
     await page.waitForFunction(`document.querySelector("${videoSelector}").readyState >= 2`);
   });
 
@@ -129,13 +136,16 @@ describe('E2E browser testing', () => {
       expect(await isVisible(replayBtn)).toBeFalsy();
 
       // ended
+      const playerEndedFlag = 'playerEnded';
+      await appointFlagToEvent(playerEndedFlag, 'ended', video);
+
       await page.evaluate((videoElem) => {
-        videoElem.addEventListener('ended', () => { window.playerEnded = true; });
         // eslint-disable-next-line no-param-reassign
         videoElem.currentTime = videoElem.duration;
       }, video);
 
-      await page.waitForFunction('window.playerEnded');
+      await page.waitForFunction(`window.${playerEndedFlag}`);
+
       expect(await getProperty(video, 'ended')).toBeTruthy();
 
       expect(await isVisible(playBtn)).toBeFalsy();
@@ -146,9 +156,15 @@ describe('E2E browser testing', () => {
         .toBe(await getComputedWidth(video));
 
       // replay
+      const playerPlayedFlag = 'playerPlayed';
+      await appointFlagToEvent(playerPlayedFlag, 'timeupdate');
+
       await replayBtn.click();
 
+      await page.waitForFunction(`window.${playerPlayedFlag}`);
+
       expect(await getProperty(video, 'paused')).toBeFalsy();
+
       expect(await getComputedWidth(progressBar))
         .not.toBe(await getComputedWidth(video));
     },
@@ -157,6 +173,6 @@ describe('E2E browser testing', () => {
   // await page.waitFor(3000);
 
   afterAll(() => {
-    browser.close();
+    // browser.close();
   });
 });
