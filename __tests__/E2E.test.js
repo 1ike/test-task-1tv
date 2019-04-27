@@ -5,8 +5,8 @@ import { namespace } from '../src/constants';
 const pathToChrome = 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe';
 
 const url = 'http://localhost:8080/';
-// const headless = true;
-const headless = false;
+const headless = true;
+// const headless = false;
 // const slowMo = headless ? 0 : 100;
 const timeout = 30000;
 
@@ -173,6 +173,6 @@ describe('E2E browser testing', () => {
   // await page.waitFor(3000);
 
   afterAll(() => {
-    // browser.close();
+    browser.close();
   });
 });
