@@ -29,7 +29,7 @@
     "build": "webpack -p",
     "page": "webpack -p --env.page",
     "server": "webpack-dev-server -d",
-    "eslint": "eslint",
+    "lint": "eslint src",
     "postinstall": "npm run build",
     "test": "jest --coverage",
     "test-watch": "jest --no-cache --watchAll"

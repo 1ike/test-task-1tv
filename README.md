@@ -47,3 +47,8 @@
 
 `http://localhost:8080/`
 
+&nbsp;
+
+## Тестирование
+
+`npm run test`

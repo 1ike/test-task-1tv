@@ -7,6 +7,9 @@ b:
 page:
 	npm run page
 
+lint:
+	npm run lint
+
 test:
 	npm run test
 
