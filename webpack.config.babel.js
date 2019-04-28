@@ -37,17 +37,22 @@ const config = {
 
 
 export default (env, argv) => {
-  console.log(argv.mode);
+  const htmlWebpackPlugin = [
+    new HtmlWebpackPlugin({
+      template: 'index.html',
+    }),
+  ];
+
   if (argv.mode === 'development') {
-    config.plugins = [
-      new HtmlWebpackPlugin({
-        template: 'index.html',
-      }),
-    ];
+    config.plugins = htmlWebpackPlugin;
   }
 
-  if (argv.mode === 'production') {
-    // ...
+  if (env.page) {
+    config.plugins = htmlWebpackPlugin;
+    config.output = {
+      ...config.output,
+      path: path.resolve(__dirname, 'docs'),
+    };
   }
 
   return config;

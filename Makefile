@@ -4,6 +4,9 @@ s:
 b:
 	npm run build
 
+page:
+	npm run page
+
 test:
 	npm run test
 

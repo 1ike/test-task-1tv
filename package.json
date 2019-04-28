@@ -27,6 +27,7 @@
   },
   "scripts": {
     "build": "webpack -p",
+    "page": "webpack -p --env.page",
     "server": "webpack-dev-server -d",
     "eslint": "eslint",
     "postinstall": "npm run build",
