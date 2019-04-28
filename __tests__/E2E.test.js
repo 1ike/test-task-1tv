@@ -8,7 +8,7 @@ dotenv.config();
 
 const pathToChromeDefault = os.platform() === 'win32'
   ? 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'
-  : '/usr/bin/chrome';
+  : '/usr/bin/google-chrome-stable';
 const pathToChrome = process.env.PATH_TO_CHROME
   ? process.env.PATH_TO_CHROME
   : pathToChromeDefault;
@@ -16,7 +16,6 @@ const pathToChrome = process.env.PATH_TO_CHROME
 const url = 'http://localhost:8080/';
 const headless = true;
 // const headless = false;
-// const slowMo = headless ? 0 : 100;
 const timeout = 30000;
 
 let page;
@@ -33,9 +32,6 @@ const playBtnSelector = `.${namespace}__playBtn`;
 const replayBtnSelector = `.${namespace}__replayBtn`;
 const progressBarSelector = `.${namespace}__progressBar`;
 
-// const width = 1920;
-// const height = 1080;
-
 
 const getProperty = async (element, property) => {
   const value = await (await element.getProperty(property)).jsonValue();
@@ -44,7 +40,8 @@ const getProperty = async (element, property) => {
 
 const getComputedStyleProperty = async (element, property) => {
   // property must be named in js style: not class but className etc.
-  const value = await page.evaluateHandle((el, prop) => getComputedStyle(el)[prop], element, property);
+  const fn = (el, prop) => getComputedStyle(el)[prop];
+  const value = await page.evaluateHandle(fn, element, property);
   return value.jsonValue();
 };
 
@@ -67,13 +64,10 @@ describe('E2E browser testing', () => {
     jest.setTimeout(timeout);
     browser = await puppeteer.launch({
       headless,
-      // slowMo,
       args: ['--no-sandbox'],
-      // args: [`--window-size=${width},${height}`]
       executablePath: pathToChrome,
     });
     page = await browser.newPage();
-    // await page.setViewport({ width, height });
 
     await page.goto(url);
 

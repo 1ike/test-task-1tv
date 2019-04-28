@@ -47,7 +47,7 @@ export default (env, argv) => {
     config.plugins = htmlWebpackPlugin;
   }
 
-  if (env.page) {
+  if (env && env.page) {
     config.plugins = htmlWebpackPlugin;
     config.output = {
       ...config.output,
