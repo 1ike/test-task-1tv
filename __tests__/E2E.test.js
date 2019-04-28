@@ -1,8 +1,17 @@
 import puppeteer from 'puppeteer';
+import os from 'os';
+import dotenv from 'dotenv';
 
 import { namespace } from '../src/constants';
 
-const pathToChrome = 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe';
+dotenv.config();
+
+const pathToChromeDefault = os.platform() === 'win32'
+  ? 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'
+  : '/usr/bin/chrome';
+const pathToChrome = process.env.PATH_TO_CHROME
+  ? process.env.PATH_TO_CHROME
+  : pathToChromeDefault;
 
 const url = 'http://localhost:8080/';
 const headless = true;
