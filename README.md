@@ -1,5 +1,7 @@
 # 1tv test job
 
+[![Build Status](https://travis-ci.org/1ike/test-task-1tv.svg?branch=master)](https://travis-ci.org/1ike/test-task-1tv)
+
 &nbsp;
 ## Задание
 

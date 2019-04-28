@@ -17,6 +17,17 @@ export default class {
     this.video = video;
     this.container = document.createElement('div');
     wrapElem(video, this.container);
+
+    const moveDimensionToWrapperStyle = (attr) => {
+      const value = video.getAttribute(attr);
+      if (value) {
+        this.container.style[attr] = value;
+        video.removeAttribute(attr);
+        video.style[attr] = '100%';
+      }
+    };
+    moveDimensionToWrapperStyle('height');
+    moveDimensionToWrapperStyle('width');
   }
 
 
@@ -41,6 +52,7 @@ export default class {
     muteBtn.className = muteBtnClassName;
     muteBtn.appendChild(muteOffIcon.cloneNode(true));
     muteBtn.appendChild(muteOnIcon.cloneNode(true));
+    if (video.muted) toggle(muteBtn, `${muteBtnClassName}--off`);
     muteBtn.addEventListener('click', () => {
       this.toggleMute();
     });

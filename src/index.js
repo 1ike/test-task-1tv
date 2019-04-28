@@ -13,9 +13,11 @@ Array.from(players).forEach((video, index) => {
   // eslint-disable-next-line no-param-reassign
   if (index === 0) video.autoplay = true;
 
-  // if (index === 0) {
-  //   video.addEventListener('canplay', () => {
-  //     player.play();
-  //   });
-  // }
+/*
+  if (index === 0) {
+    video.addEventListener('canplay', () => {
+      player.play();
+    });
+  }
+ */
 });

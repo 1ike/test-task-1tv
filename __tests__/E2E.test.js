@@ -15,13 +15,13 @@ const pathToChrome = process.env.PATH_TO_CHROME
 
 const url = 'http://localhost:8080/';
 const headless = true;
-// const headless = false;
 const timeout = 30000;
 
 let page;
 let browser;
 
 let video;
+let muteBtn;
 let playBtn;
 let replayBtn;
 let progressBar;
@@ -72,20 +72,22 @@ describe('E2E browser testing', () => {
     await page.goto(url);
 
     video = await page.$(videoSelector);
+    muteBtn = await page.$(muteBtnSelector);
     playBtn = await page.$(playBtnSelector);
     replayBtn = await page.$(replayBtnSelector);
     progressBar = await page.$(progressBarSelector);
 
-    // await playBtn.click();
     await page.waitForFunction(`document.querySelector("${videoSelector}").readyState >= 2`);
   });
 
   it(
     'mute',
     async () => {
+      const muted = await getProperty(video, 'muted');
+      if (muted) await muteBtn.click();
+
       expect(await getProperty(video, 'muted')).toBeFalsy();
 
-      const muteBtn = await page.$(muteBtnSelector);
       await muteBtn.click();
 
       expect(await getProperty(video, 'muted')).toBeTruthy();
@@ -172,8 +174,6 @@ describe('E2E browser testing', () => {
         .not.toBe(await getComputedWidth(video));
     },
   );
-
-  // await page.waitFor(3000);
 
   afterAll(() => {
     browser.close();
